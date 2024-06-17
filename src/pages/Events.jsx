@@ -45,29 +45,31 @@ const Events = () => {
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Events</h1>
       <button onClick={() => openModal()} className="btn btn-primary mb-4">Add Event</button>
-      <table className="table-auto w-full">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Date</th>
-            <th>Venue</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {events.map((event) => (
-            <tr key={event.id}>
-              <td>{event.name}</td>
-              <td>{event.date}</td>
-              <td>{event.venue}</td>
-              <td>
-                <button onClick={() => openModal(event)} className="btn btn-secondary mr-2">Edit</button>
-                <button onClick={() => handleDeleteEvent(event.id)} className="btn btn-danger">Delete</button>
-              </td>
+      <div className="overflow-x-auto">
+        <table className="table w-full">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Date</th>
+              <th>Venue</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {events.map((event) => (
+              <tr key={event.id}>
+                <td>{event.name}</td>
+                <td>{event.date}</td>
+                <td>{event.venue}</td>
+                <td>
+                  <button onClick={() => openModal(event)} className="btn btn-secondary mr-2">Edit</button>
+                  <button onClick={() => handleDeleteEvent(event.id)} className="btn btn-danger">Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Event Modal">
         <h2>{editingEvent ? 'Edit Event' : 'Add Event'}</h2>
         <input

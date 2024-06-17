@@ -45,7 +45,8 @@ const Venues = () => {
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Venues</h1>
       <button onClick={() => openModal()} className="btn btn-primary mb-4">Add Venue</button>
-      <table className="table-auto w-full">
+      <div className="overflow-x-auto">
+        <table className="table w-full">
         <thead>
           <tr>
             <th>Name</th>
@@ -68,6 +69,7 @@ const Venues = () => {
           ))}
         </tbody>
       </table>
+      </div>
       <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Venue Modal">
         <h2>{editingVenue ? 'Edit Venue' : 'Add Venue'}</h2>
         <input
