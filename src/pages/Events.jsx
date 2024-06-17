@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useEvents, useAddEvent, useUpdateEvent, useDeleteEvent } from '../integrations/supabase/index.js';
+import { useEvents, useAddEvent, useUpdateEvent, useDeleteEvent, useVenues } from '../integrations/supabase/index.js';
 import Modal from 'react-modal';
 
 const Events = () => {
   const { data: events, isLoading, isError } = useEvents();
+  const { data: venues } = useVenues();
   const addEvent = useAddEvent();
   const updateEvent = useUpdateEvent();
   const deleteEvent = useDeleteEvent();
@@ -60,7 +61,7 @@ const Events = () => {
               <tr key={event.id}>
                 <td>{event.name}</td>
                 <td>{event.date}</td>
-                <td>{event.venue}</td>
+                <td>{venues.find(venue => venue.id === event.venue)?.name || 'Unknown Venue'}</td>
                 <td>
                   <button onClick={() => openModal(event)} className="btn btn-secondary mr-2">Edit</button>
                   <button onClick={() => handleDeleteEvent(event.id)} className="btn btn-danger">Delete</button>
@@ -85,13 +86,16 @@ const Events = () => {
           onChange={(e) => editingEvent ? setEditingEvent({ ...editingEvent, date: e.target.value }) : setNewEvent({ ...newEvent, date: e.target.value })}
           className="input input-bordered mr-2"
         />
-        <input
-          type="text"
-          placeholder="Venue"
+        <select
           value={editingEvent ? editingEvent.venue : newEvent.venue}
           onChange={(e) => editingEvent ? setEditingEvent({ ...editingEvent, venue: e.target.value }) : setNewEvent({ ...newEvent, venue: e.target.value })}
           className="input input-bordered mr-2"
-        />
+        >
+          <option value="">Select Venue</option>
+          {venues.map((venue) => (
+            <option key={venue.id} value={venue.id}>{venue.name}</option>
+          ))}
+        </select>
         <button onClick={editingEvent ? handleUpdateEvent : handleAddEvent} className="btn btn-primary">{editingEvent ? 'Update' : 'Add'}</button>
         <button onClick={closeModal} className="btn btn-secondary ml-2">Cancel</button>
       </Modal>
